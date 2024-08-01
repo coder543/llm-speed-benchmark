@@ -1,4 +1,4 @@
-# Initial Results from llm-speed-benchmark
+# llm-speed-benchmark results (GPT-4o mini slower than GPT-4o?)
 
 These are the initial results of my benchmarking using `llm-speed-benchmark`. I have evaluated some popular hosted models from OpenAI, Google, Mistral, and Groq.
 
