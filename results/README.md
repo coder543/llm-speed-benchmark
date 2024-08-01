@@ -6,6 +6,8 @@ These are the initial results of my benchmarking using `llm-speed-benchmark`. I 
 
 One of the most interesting findings from my initial benchmarking is that GPT-4o mini, a smaller version of GPT-4o, [appeared to be slightly slower than GPT-4o](gpt_4o_vs_4o_mini.png). This is counterintuitive to me for several reasons: OpenAI claims that GPT-4o mini is faster than GPT-4o, and GPT-4o costs ~25x more than GPT-4o mini, so one would expect GPT-4o mini to be substantially faster and more efficient.
 
+Interestingly, Gemini 1.5 Pro and Flash both seem to return much larger chunks than other model providers at a consequently larger latency between chunks. I'm not sure if this is just an artifact of their OpenAI compatibility layer, but it would significantly impact the "smoothness" of the output, if used in an interactive environment.
+
 If any of these results look wrong to you, please feel free to open an issue, or open a PR to fix things. I encourage people to try this tool against their LLM providers and open a PR with more data, which I would be happy to include here.
 
 ## Summary of Results
