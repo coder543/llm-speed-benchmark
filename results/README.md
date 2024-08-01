@@ -8,6 +8,8 @@ One of the most interesting findings from my initial benchmarking is that GPT-4o
 
 Interestingly, Gemini 1.5 Pro and Flash both seem to return much larger chunks than other model providers at a consequently larger latency between chunks. I'm not sure if this is just an artifact of their OpenAI compatibility layer, but it would significantly impact the "smoothness" of the output, if used in an interactive environment.
 
+All of the models were prompted with [the same prompt](https://github.com/coder543/llm-speed-benchmark/blob/82dac0de0c4ab1213492cdaa5109e5da291dd835/benchmark.py#L13), so it is interesting to observe how verbose (or not) different models were in response to this prompt.
+
 If any of these results look wrong to you, please feel free to open an issue, or open a PR to fix things. I encourage people to try this tool against their LLM providers and open a PR with more data, which I would be happy to include here.
 
 ## Summary of Results
