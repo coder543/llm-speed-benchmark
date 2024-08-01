@@ -1,0 +1,6 @@
+openai
+tiktoken
+tqdm
+pandas
+seaborn
+matplotlib

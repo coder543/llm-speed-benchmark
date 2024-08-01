@@ -9,7 +9,7 @@ from tqdm import tqdm
 import tiktoken
 from openai import OpenAI
 
-# Default prompt
+# Default prompt used for benchmarking. Long enough to hopefully get a good sense of prompt processing speed, and generate enough response tokens to get a reasonable measure there too.
 DEFAULT_PROMPT = ("Imagine you are planning a week-long vacation to a place you've never visited before. "
                   "Describe the destination, including its main attractions and cultural highlights. "
                   "What activities would you prioritize during your visit? Additionally, explain how you would prepare for the trip, "
@@ -58,6 +58,8 @@ def benchmark_model(client, model_name, prompt):
     try:
         encoding = tiktoken.encoding_for_model(model_name)
     except:
+        # TODO: Tokenization for non-OpenAI models is only approximated by the gpt-4 tokenizer for now.
+        #   Ideally, we should detect the type of model, and choose the correct tokenizer for full accuracy.
         encoding = tiktoken.encoding_for_model('gpt-4')
     
     num_tokens = len(encoding.encode(full_response))
@@ -65,9 +67,11 @@ def benchmark_model(client, model_name, prompt):
 
     # Calculate tokens per second
     tokens_per_second = num_tokens / response_time if response_time > 0 else float('inf')
-    prompt_tokens_per_second = prompt_tokens / time_to_first_token if time_to_first_token > 0 else float('inf')
     avg_tokens_per_chunk = sum(chunk_tokens) / num_chunks if num_chunks > 0 else float('inf')
     avg_time_between_chunks = sum(chunk_times) / len(chunk_times) if len(chunk_times) > 0 else float('inf')
+    # prompt_tokens_per_second unfortunately includes the time to generate the first chunk of output tokens, but this seems unavoidable.
+    # The longer the input prompt, the more accurate this number should be.
+    prompt_tokens_per_second = prompt_tokens / time_to_first_token if time_to_first_token > 0 else float('inf')
 
     # Return the benchmark results
     return {
@@ -198,7 +202,7 @@ def generate_markdown_summary(csv_file):
         md_file.write("\n*Values are presented as median +/- IQR (Interquartile Range). Tokenization of non-OpenAI models is approximate.*\n")
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Benchmark OpenAI GPT models.")
+    parser = argparse.ArgumentParser(description="Benchmark OpenAI-compatible GPT models.")
     parser.add_argument("--models", "-m", type=str, help="Comma-separated list of model names to benchmark.")
     parser.add_argument("--prompt", type=str, default=DEFAULT_PROMPT, help="The prompt to send to the models.")
     parser.add_argument("--number", "-n", type=int, default=10, help="Number of times to run the benchmark (default 10).")
